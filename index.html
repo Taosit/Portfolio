@@ -12,14 +12,14 @@
 <body>
   <nav>
     <div class="nav-items">
-      <span class="nav-item active">
+      <span class="nav-item home-link active">
         <a href="#" class="nav-item-text">Home</a>
       </span>
-      <span class="nav-item">
-        <a href="#" class="nav-item-text">Projects</a>
+      <span class="nav-item projects-link">
+        <a href="#projects" class="nav-item-text">Projects</a>
       </span>
-      <span class="nav-item">
-        <a href="#" class="nav-item-text">Contact</a>
+      <span class="nav-item contact-link">
+        <a href="#contact" class="nav-item-text">Contact</a>
       </span>
     </div>
     <div class="nav-menu">
@@ -32,14 +32,14 @@
         </div>
       </div>
       <div class="nav-collapse">
-        <div class="nav-item-collapse active-item-collapse">
+        <div class="nav-item-collapse home-link active-item-collapse">
           <a href="#" class="nav-item-collapse-text">Home</a>
         </div>
-        <div class="nav-item-collapse">
-          <a href="#" class="nav-item-collapse-text">Projects</a>
+        <div class="nav-item-collapse projects-link">
+          <a href="#projects" class="nav-item-collapse-text">Projects</a>
         </div>
-        <div class="nav-item-collapse">
-          <a href="#" class="nav-item-collapse-text">Contact</a>
+        <div class="nav-item-collapse contact-link">
+          <a href="#contact" class="nav-item-collapse-text">Contact</a>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
 
 
   <main>
-    <div class="page home-page">
+    <section class="page home-page" id="home">
       <div class="h1-container">
         <div class="greeting-container">
           <h1>Hi!</h1>
@@ -71,9 +71,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="project-page-container">
+    <section class="project-page-container" id="projects">
       <div class="h2-container">
         <h2>My Projects</h2>
         <div class="h2-icon">
@@ -301,44 +301,63 @@
         </article>
       </div>
       <div class="page-bottom-overlay"></div>
-    </div>
+    </section>
 
-    <div class="contact-page page">
+    <section class="contact-page page" id="contact">
       <div class="h2-container">
         <h2>Contact Me</h2>
         <div class="h2-icon">
           <img src="images/mail.svg" alt="mail">
         </div>
       </div>
-      <form class="contact-card">
-        <div class="contact-input-group">
-          <label for="name">Name</label>
-          <input type="text" id="name">
-          <div class="error-message-container" id="name-error">
-            <p class="error-message">&times; Name cannot be empty</p>
+      <div class="form-container">
+        <form class="contact-card">
+          <div class="contact-input-group">
+            <label for="name">Name</label>
+            <input type="text" id="name">
+            <div class="error-message-container" id="name-error">
+              <p class="error-message">&times; Name cannot be empty</p>
+            </div>
           </div>
-        </div>
-        <div class="contact-input-group">
-          <label for="email">Email</label>
-          <input type="email" id="email">
-          <div class="error-message-container" id="email-error">
-            <p class="error-message">&nbsp;</p>
+          <div class="contact-input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email">
+            <div class="error-message-container opacity-zero" id="email-error">
+              <p class="error-message">&nbsp;</p>
+            </div>
           </div>
-        </div>
-        <div class="contact-input-group">
-          <label for="message">Message</label>
-          <textarea id="message" cols="25" rows="8"></textarea>
-        </div>
-        <div class="send-button-container">
-          <button class="send-button">Send</button>
-          <div class="error-message-container" id="message-error">
-            <p class="error-message">&nbsp;</p>
+          <div class="contact-input-group">
+            <label for="message">Message</label>
+            <textarea id="message"></textarea>
+            <div class="error-message-container opacity-zero" id="message-error">
+              <p class="error-message">&nbsp;</p>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
+          <div class="send-button-container">
+            <div class="send-button-outline">
+              <button type="button" class="send-button">Send</button>
+              <img src="images/sent.svg" alt="sent">
+              <div class="loader"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="top-star-container">
+        <div class="star green-star"></div>
+        <div class="star blue-star"></div>
+        <div class="star orange-star"></div>
+      </div>
+      <div class="bottom-star-container">
+        <div class="star purple-star"></div>
+        <div class="star yellow-star"></div>
+      </div>
+      <div class="trees-container">
+        <img src="images/trees.svg" alt="trees">
+      </div>
+    </section>
   </main>
 
+  <script src="main.js"></script>
 </body>
 
 </html>
