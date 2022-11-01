@@ -18,8 +18,99 @@ const navCollopasItems = navCollapsItemContainer.querySelectorAll("div");
 
 const airplaneContainer = document.querySelector(".airplane-container");
 
+const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
+
+const buttonGroups = document.querySelectorAll(".button-group");
+
+/*
+------------------Navbar update and airplane rotation---------------------
+*/
+
 let rotationDegrees = 0;
 let airplaneTimer;
+
+const getCurrentSection = () => {
+  let current = "home";
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    if (scrollY >= sectionTop - 48 ) {
+      current = section.getAttribute("id"); 
+    }
+  });
+  return current;
+}
+
+const updateNavItems = (currentSection, navItems, activeClassName) => {
+  navItems.forEach((span) => {
+    span.classList.remove(activeClassName);
+    if ([...span.classList].some(className => className.includes(currentSection))) {
+      span.classList.add(activeClassName);
+    }
+  });
+}
+
+const balanceAirplane = () => {
+  if (airplaneTimer) return;
+  airplaneTimer = setInterval(() => {
+    if (rotationDegrees > 1) {
+      if (rotationDegrees > -45) rotationDegrees -= 0.08;
+    } else if (rotationDegrees < 0) {
+      if (rotationDegrees < 45) rotationDegrees += 0.08;
+    } else {
+      clearInterval(airplaneTimer);
+      airplaneTimer = null;
+    }
+    airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
+  }, 1000 / 60)
+}
+
+const rotateAirplane = () => {
+  balanceAirplane()
+  const scrollDirection = scrollY - previousScrollY;
+  rotationDegrees += scrollDirection * -0.02;
+  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
+  previousScrollY = scrollY
+}
+
+let previousScrollY = 0;
+
+window.onscroll = () => {
+  const current = getCurrentSection();
+  
+  updateNavItems(current, navItems, "active");
+  updateNavItems(current, navCollopasItems, "active-item-collapse");
+
+  if (current === "projects") rotateAirplane();
+};
+
+/*
+------------------Project Video Play---------------------
+*/
+
+[...buttonGroups].forEach((buttonGroup, i) => {
+  buttonGroup.addEventListener("click", (e) => {
+    if (e.target.tagName === "LABEL")  return;
+    const videoName = e.target.value;
+    const video = document.createElement("video");
+    video.src = `videos/${videoName}.mp4`;
+    const projectImageContainer = projectImageContainers[i];
+    if (projectImageContainer.children.length === 3) {
+      projectImageContainer.children[2].remove();
+    }
+    projectImageContainer.append(video);
+    video.play();
+    video.addEventListener('ended', () => {
+      video.classList.add("opacity-zero");
+      setTimeout(() => {
+        video.remove()
+      }, 1000);
+    });
+  })
+})
+
+/*
+------------------Form Validation---------------------
+*/
 
 const inputChecker = {
   name: {isValid: false, message: ""},
@@ -107,56 +198,3 @@ nameInput.addEventListener("blur", () => updateErrorMessage("name"))
 emailInput.addEventListener("blur", () => updateErrorMessage("email"));
 messageInput.addEventListener("blur", () => updateErrorMessage("message"));
 
-const getCurrentSection = () => {
-  let current = "home";
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    if (scrollY >= sectionTop - 48 ) {
-      current = section.getAttribute("id"); 
-    }
-  });
-  return current;
-}
-
-const updateNavItems = (currentSection, navItems, activeClassName) => {
-  navItems.forEach((span) => {
-    span.classList.remove(activeClassName);
-    if ([...span.classList].some(className => className.includes(currentSection))) {
-      span.classList.add(activeClassName);
-    }
-  });
-}
-
-const balanceAirplane = () => {
-  if (airplaneTimer) return;
-  airplaneTimer = setInterval(() => {
-    if (rotationDegrees > 1) {
-      rotationDegrees -= 0.08;
-    } else if (rotationDegrees < 0) {
-      rotationDegrees += 0.08;
-    } else {
-      clearInterval(airplaneTimer);
-      airplaneTimer = null;
-    }
-    airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
-  }, 1000 / 60)
-}
-
-const rotateAirplane = () => {
-  balanceAirplane()
-  const scrollDirection = scrollY - previousScrollY;
-  rotationDegrees += scrollDirection * -0.02;
-  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
-  previousScrollY = scrollY
-}
-
-let previousScrollY = 0;
-
-window.onscroll = () => {
-  const current = getCurrentSection();
-  
-  updateNavItems(current, navItems, "active");
-  updateNavItems(current, navCollopasItems, "active-item-collapse");
-
-  if (current === "projects") rotateAirplane();
-};
