@@ -311,35 +311,31 @@
         </div>
       </div>
       <div class="form-container">
-        <form class="contact-card">
+        <form class="contact-card" target="_blank" action="https://formsubmit.co/taosit099@gmail.com" method="POST">
+          <input type="text" name="_honey" style="display:none">
+          <input type="hidden" name="_captcha" value="false">
           <div class="contact-input-group">
             <label for="name">Name</label>
-            <input type="text" id="name">
-            <div class="error-message-container" id="name-error">
-              <p class="error-message">&times; Name cannot be empty</p>
+            <input type="text" name="name" id="name" required>
+            <div class="error-message-container opacity-zero" id="name-error">
+              <p class="error-message name-error-message">&nbsp;</p>
             </div>
           </div>
           <div class="contact-input-group">
             <label for="email">Email</label>
-            <input type="email" id="email">
+            <input type="email" name="email" id="email" required>
             <div class="error-message-container opacity-zero" id="email-error">
-              <p class="error-message">&nbsp;</p>
+              <p class="error-message email-error-message">&nbsp;</p>
             </div>
           </div>
           <div class="contact-input-group">
             <label for="message">Message</label>
-            <textarea id="message"></textarea>
+            <textarea id="message" name="message" required></textarea>
             <div class="error-message-container opacity-zero" id="message-error">
-              <p class="error-message">&nbsp;</p>
+              <p class="error-message message-error-message">&nbsp;</p>
             </div>
           </div>
-          <div class="send-button-container">
-            <div class="send-button-outline">
-              <button type="button" class="send-button">Send</button>
-              <img src="images/sent.svg" alt="sent">
-              <div class="loader"></div>
-            </div>
-          </div>
+          <button type="submit" class="send-button" disabled>Submit Form</button>
         </form>
       </div>
       <div class="top-star-container">

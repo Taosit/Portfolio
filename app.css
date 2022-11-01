@@ -64,6 +64,7 @@ table {
 body {
     margin: 0;
     background-color: var(--dark-gray);
+    overflow-x: hidden;
 }
 
 main {
@@ -83,7 +84,7 @@ h3 {
     color: black;
 }
 
-h3, h4, p, label, a, li {
+h3, h4, p, label, a, li, input, textarea {
     font-family: Poppins;
 }
 
@@ -92,6 +93,23 @@ h3, h4, p, label, a, li {
     padding-top: 3em;
     margin: 0 auto;
     position: relative;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #f1f1f15f;
+    border-radius: 2px;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #cac9c25f;;
 }
 
 /* -------------Navbar------------ */
@@ -217,6 +235,11 @@ nav {
 
 .active-item-collapse {
     background-image: linear-gradient(180deg, #A09C90 0%, #E1E1E1 27.6%, #E1E1E1 50%, #E1E1E1 71.87%, #A09C90 100%);
+}
+
+.nav-item-collapse-text {
+    color: #544A39;
+    font-weight: bold;
 }
 
 nav input[type="checkbox"]:checked ~ .nav-collapse {
@@ -475,6 +498,7 @@ p + p {
 .project-card {
     background: linear-gradient(124.7deg, hsl(var(--hue), 100%, 75%) 31.48%, hsl(var(--hue), 50%, 50%) 88.63%);
     border-radius: 2em;
+    box-shadow: 0 0 5px rgba(128, 128, 128, 0.491);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -691,7 +715,7 @@ p + p {
   z-index: -1;   
 }
 
-.sent::before {
+.contact-card:has(button:active)::before {
     animation: animate-background 1s;
 }
 
@@ -721,8 +745,10 @@ p + p {
 }
 
 textarea {
+    width: 100%;
     height: 16vh;
-    font-size: medium;
+    font-size: 1em;
+    resize: none;
 }
 
 .error-message-container {
@@ -741,37 +767,21 @@ textarea {
     font-size: 14px;
 }
 
-.send-button-container {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-}
-
-.send-button-outline {
-    width: 170px;
-    height: 35px;
-    position: relative;
-}
-
 .send-button {
     width: 100%;
-    height: 100%;
+    height: 1.5em;
     font-size: 20px;
+    border-radius: 0.2em;
     color: white;
     background-color: var(--dark-gray);
     border: 2px solid white;
     cursor: pointer;
+    margin-top: 0.3em;
 }
 
-.send-button-outline img {
-    position: absolute;
-    height: 40%;
-    right: 12%;
-    top: 50%;
-    translate: 0 -50%;
-    opacity: 0;
-    transition: opacity 0.2s;
+.send-button:disabled {
+    cursor: auto;
+    opacity: 0.6;
 }
 
 .loader {
