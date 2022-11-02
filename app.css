@@ -496,6 +496,7 @@ p + p {
 }
 
 .project-card {
+    container-type: inline-size;
     background: linear-gradient(124.7deg, hsl(var(--hue), 100%, 75%) 31.48%, hsl(var(--hue), 50%, 50%) 88.63%);
     border-radius: 2em;
     box-shadow: 0 0 5px rgba(128, 128, 128, 0.491);
@@ -506,7 +507,7 @@ p + p {
 
 .individual-project-image-container {
     width: 100%;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
     position: relative;
     overflow: hidden;
 }
@@ -584,6 +585,7 @@ p + p {
 }
 
 .info-half {
+    container: info-container / inline-size;
     padding: 3em 1em 1em 1em;
     position: relative;
 }
@@ -607,7 +609,8 @@ p + p {
 .project-description p {
     color: #464646;
     font-weight: 500;
-    line-height: 1.4em;
+    font-size: 14px;
+    line-height: 1.3em;
 }
 
 .project-skills {
@@ -648,17 +651,32 @@ p + p {
 }
 
 @media (width >= 768px) {
+    .project-description p {
+        font-size: 16px;
+    }
     .button-group label {
         padding: 1em 0;
     }
     .project-container {
-        /* width: min(80%, 500px); */
+        width: min(60%, 400px);
         gap: 4em;
     }
-    /* .page-bottom-overlay {
-        translate: min(10vw, calc(50vw - 250px));
-    } */
+    .page-bottom-overlay {
+        translate: 10vw;
+    }
+    
+}
 
+@media (width >= 1024px) {
+    .project-description p {
+        font-size: 14px;
+    }
+    .project-container {
+        width: 80%;
+    }
+    .page-bottom-overlay {
+        translate: 10vw;
+    }
     .project-card {
         flex-direction: row;
     }
@@ -668,13 +686,17 @@ p + p {
     .button-group label:first-of-type {
         border-bottom-left-radius: 2em;
     }
-    .info-half {
+}
+
+@container info-container (width > 320px) {
+    .info-container {
+        height: 100%;
         display: grid;
         grid-template-rows: 1fr auto;
     }
     .project-info {
         flex-direction: row;
-        margin-top: 1.2em;
+        margin-top: 1em;
     }
     .project-skills {
         font-size: 16px;
@@ -683,14 +705,10 @@ p + p {
     }
 }
 
-@media (width >= 1024px) {
-    .project-container {
-        width: 80%;
+@container info-container (width > 350px) {
+    .project-description p {
+        font-size: 16px;
     }
-    .page-bottom-overlay {
-        translate: 10vw;
-    }
-    
 }
 
 /* -------------Contact Page------------ */
