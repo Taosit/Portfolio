@@ -25,6 +25,7 @@ const buttonGroups = document.querySelectorAll(".button-group");
 /*
 ------------------Navbar update and airplane rotation---------------------
 */
+const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
 let rotationDegrees = 0;
 let airplaneTimer;
@@ -53,9 +54,9 @@ const balanceAirplane = () => {
   if (airplaneTimer) return;
   airplaneTimer = setInterval(() => {
     if (rotationDegrees > 1) {
-      if (rotationDegrees > -45) rotationDegrees -= 0.08;
+      if (rotationDegrees > -35) rotationDegrees -= 0.08;
     } else if (rotationDegrees < 0) {
-      if (rotationDegrees < 45) rotationDegrees += 0.08;
+      if (rotationDegrees < 35) rotationDegrees += 0.08;
     } else {
       clearInterval(airplaneTimer);
       airplaneTimer = null;
@@ -80,7 +81,7 @@ window.onscroll = () => {
   updateNavItems(current, navItems, "active");
   updateNavItems(current, navCollopasItems, "active-item-collapse");
 
-  if (current === "projects") rotateAirplane();
+  if (current === "projects" && !isReduced) rotateAirplane();
 };
 
 /*

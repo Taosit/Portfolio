@@ -61,6 +61,10 @@ table {
 
 /* -------------Global------------ */
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     background-color: var(--dark-gray);
@@ -93,23 +97,6 @@ h3, h4, p, label, a, li, input, textarea {
     padding-top: 3em;
     margin: 0 auto;
     position: relative;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-  
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-  
-::-webkit-scrollbar-thumb {
-    background: #f1f1f15f;
-    border-radius: 2px;
-}
-  
-::-webkit-scrollbar-thumb:hover {
-    background: #cac9c25f;;
 }
 
 /* -------------Navbar------------ */
@@ -320,7 +307,7 @@ nav input[type="checkbox"]:checked ~ .menu-container .line3 {
 .moon {
     position: relative;
     translate: 0 -10%;
-    height: max(60%, 50vw);
+    height: min(max(60%, 50vw), 400px);
     aspect-ratio: 1/1;
     border-radius: 1000px;
     background: #FFC457;
@@ -467,6 +454,7 @@ p + p {
     margin: 16vh auto;
     display: flex;
     flex-direction: column;
+    max-width: 400px;;
     gap: 2em;
 }
 
@@ -513,7 +501,7 @@ p + p {
 }
 
 .individual-project-image-container img {
-    /* width: 100%; */
+    width: 100%;
     object-fit: cover;
 }
 
@@ -522,7 +510,7 @@ p + p {
     top: 50%;
     left: 50%;
     translate: -50% -50%;
-    scale: 1.15;
+    scale: 1.25;
     transition: opacity 1s;
 }
 
@@ -590,6 +578,12 @@ p + p {
     position: relative;
 }
 
+.info-container {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
 .project-name {
     position: absolute;
     top: 0.6em;
@@ -651,6 +645,9 @@ p + p {
 }
 
 @media (width >= 768px) {
+    .project-container {
+        max-width: 1200px;
+    }
     .project-description p {
         font-size: 16px;
     }
@@ -689,11 +686,6 @@ p + p {
 }
 
 @container info-container (width > 320px) {
-    .info-container {
-        height: 100%;
-        display: grid;
-        grid-template-rows: 1fr auto;
-    }
     .project-info {
         flex-direction: row;
         margin-top: 1em;
@@ -708,6 +700,13 @@ p + p {
 @container info-container (width > 350px) {
     .project-description p {
         font-size: 16px;
+    }
+}
+
+@container info-container (width > 375px) {
+    .project-description p {
+        font-size: 16px;
+        line-height: 1.5;
     }
 }
 
@@ -933,8 +932,6 @@ textarea {
     z-index: -2;
 }
 
-
-
 @media (width >= 768px) {
     .contact-card {
         display: grid;
@@ -971,3 +968,15 @@ textarea {
         width: 80%;
     }
 }
+
+@media (prefers-reduced-motion) {
+    html {
+        scroll-behavior: auto;
+    }
+    .contact-card:has(button:active)::before {
+        animation: none;
+    }
+    .star {
+        animation: none;
+    }
+  }
