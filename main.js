@@ -12,6 +12,9 @@ const messageErrorMessage = document.querySelector(".message-error-message");
 
 const navItemContainer = document.querySelector(".nav-items");
 const navItems = navItemContainer.querySelectorAll("span");
+const hamburger = document.querySelector(".lines");
+const navCollapseTexts = document.querySelectorAll(".nav-item-collapse-text");
+const toggleButton = document.querySelector(".toggle-nav");
 
 const navCollapsItemContainer = document.querySelector(".nav-collapse");
 const navCollopasItems = navCollapsItemContainer.querySelectorAll("div");
@@ -22,8 +25,42 @@ const projectImageContainers = document.querySelectorAll(".individual-project-im
 
 const buttonGroups = document.querySelectorAll(".button-group");
 
+const MAX_ROTATION = 20;
+
 /*
-------------------Navbar update and airplane rotation---------------------
+------------------Navbar tabing---------------------
+*/
+
+const showNav = () => {
+  toggleButton.setAttribute("checked", "true");
+  navCollapseTexts.forEach((item) => {
+    item.setAttribute("tabindex", "0");
+  });
+  hamburger.dataset.state = "open";
+}
+
+const hideNav = () => {
+  toggleButton.removeAttribute("checked");
+  navCollapseTexts.forEach((item) => {
+    item.setAttribute("tabindex", "-1");
+  });
+  hamburger.dataset.state = "closed";
+}
+
+hamburger.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  if (hamburger.dataset.state === "closed") showNav(); 
+  else hideNav();
+});
+
+navCollapseTexts.forEach((item) => {
+  item.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") hideNav();
+  });
+});
+
+/*
+------------------Navbar Update---------------------
 */
 const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
@@ -50,17 +87,23 @@ const updateNavItems = (currentSection, navItems, activeClassName) => {
   });
 }
 
+/*
+------------------Airplane Rotation---------------------
+*/
+
 const balanceAirplane = () => {
   if (airplaneTimer) return;
   airplaneTimer = setInterval(() => {
     if (rotationDegrees > 1) {
-      if (rotationDegrees > -35) rotationDegrees -= 0.08;
+      rotationDegrees -= 0.08;
     } else if (rotationDegrees < 0) {
-      if (rotationDegrees < 35) rotationDegrees += 0.08;
+      rotationDegrees += 0.08;
     } else {
       clearInterval(airplaneTimer);
       airplaneTimer = null;
     }
+    rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION);
+    rotationDegrees = Math.max(rotationDegrees, -MAX_ROTATION);
     airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
   }, 1000 / 60)
 }
@@ -88,24 +131,38 @@ window.onscroll = () => {
 ------------------Project Video Play---------------------
 */
 
+const playVideo = (videoName, projectImageContainer) => {
+  const video = document.createElement("video");
+  video.src = `videos/${videoName}.mp4`;
+  if (projectImageContainer.children.length === 3) {
+    projectImageContainer.children[2].remove();
+  }
+  projectImageContainer.append(video);
+  video.play();
+  video.addEventListener('ended', () => {
+    video.classList.add("opacity-zero");
+    setTimeout(() => {
+      video.remove()
+    }, 1000);
+  });
+}
+
 [...buttonGroups].forEach((buttonGroup, i) => {
   buttonGroup.addEventListener("click", (e) => {
     if (e.target.tagName === "LABEL")  return;
     const videoName = e.target.value;
-    const video = document.createElement("video");
-    video.src = `videos/${videoName}.mp4`;
-    const projectImageContainer = projectImageContainers[i];
-    if (projectImageContainer.children.length === 3) {
-      projectImageContainer.children[2].remove();
-    }
-    projectImageContainer.append(video);
-    video.play();
-    video.addEventListener('ended', () => {
-      video.classList.add("opacity-zero");
-      setTimeout(() => {
-        video.remove()
-      }, 1000);
-    });
+    playVideo(videoName, projectImageContainers[i]);
+  })
+
+  const labels = buttonGroup.querySelectorAll("label");
+  labels.forEach((label) => {
+    label.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const videoName = label.getAttribute("for");
+      const radio = buttonGroup.querySelector(`#${videoName}`);
+      radio.checked = true;
+      playVideo(videoName, projectImageContainers[i]);
+    })
   })
 })
 

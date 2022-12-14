@@ -83,6 +83,10 @@ h1, h2 {
     letter-spacing: 2px;
 }
 
+h1 {
+    font-size: min(10vw, 5vh);
+}
+
 h3 {
     font-weight: 700;
     color: black;
@@ -278,7 +282,8 @@ nav input[type="checkbox"]:checked ~ .menu-container .line3 {
 }
 
 .h1-icon {
-    width: 1.5em;
+    width: min(20vw, 10vh);
+    display: flex;
 }
 
 .intro-container {
@@ -307,7 +312,8 @@ nav input[type="checkbox"]:checked ~ .menu-container .line3 {
 .moon {
     position: relative;
     translate: 0 -10%;
-    height: min(max(60%, 50vw), 400px);
+    height: min(80%, 60vw);
+    max-height: 450px;
     aspect-ratio: 1/1;
     border-radius: 1000px;
     background: #FFC457;
@@ -350,10 +356,16 @@ nav input[type="checkbox"]:checked ~ .menu-container .line3 {
 
 @media (width >= 1024px) {
     .home-page {
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 3fr 2fr;
     }
     .h1-container {
         margin-top: 1em;
+    }
+    .h1-container h1 {
+        font-size: min(5vw, 4.5em);
+    }
+    .h1-icon {
+        width: 1.5em;
     }
     .intro-container {
         order: 2;

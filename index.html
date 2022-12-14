@@ -23,9 +23,9 @@
       </span>
     </div>
     <div class="nav-menu">
-      <input class="toggle-nav" type="checkbox" />
+      <input class="toggle-nav" tabindex="-1" type="checkbox" />
       <div class="menu-container">
-        <div class="lines">
+        <div class="lines" tabindex="0" data-state="closed">
           <span class="line line1"></span>
           <span class="line line2"></span>
           <span class="line line3"></span>
@@ -33,13 +33,13 @@
       </div>
       <div class="nav-collapse">
         <div class="nav-item-collapse home-link active-item-collapse">
-          <a href="#" class="nav-item-collapse-text">Home</a>
+          <a tabindex="-1" href="#" class="nav-item-collapse-text">Home</a>
         </div>
         <div class="nav-item-collapse projects-link">
-          <a href="#projects" class="nav-item-collapse-text">Projects</a>
+          <a tabindex="-1" href="#projects" class="nav-item-collapse-text">Projects</a>
         </div>
         <div class="nav-item-collapse contact-link">
-          <a href="#contact" class="nav-item-collapse-text">Contact</a>
+          <a tabindex="-1" href="#contact" class="nav-item-collapse-text">Contact</a>
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
         <div class="moon">
           <img class="stars" src="images/stars.svg" alt="stars">
           <div class="photo-container">
-            <img class="photo" src="images/photo.png" alt="photo">
+            <img class="photo" src="images/photo.webp" alt="photo">
             <div class="photo-overlay"></div>
           </div>
         </div>
@@ -109,11 +109,11 @@
               </div>
             </div>
             <div class="button-group">
-              <label for="ready_phonetics">Phonetics</label>
+              <label for="ready_phonetics" role="button" tabindex="0">Phonetics</label>
               <input type="radio" value="ready_phonetics" name="read-y" id="ready_phonetics">
-              <label for="ready_meanings">Meanings</label>
+              <label for="ready_meanings" role="button" tabindex="0">Meanings</label>
               <input type="radio" value="ready_meanings" name="read-y" id="ready_meanings">
-              <label for="ready_download">Download</label>
+              <label for="ready_download" role="button" tabindex="0">Download</label>
               <input type="radio" value="ready_download" name="read-y" id="ready_download">
             </div>
           </div>
@@ -129,8 +129,8 @@
                   </p>
                 </div>
                 <ul class="project-skills">
-                  <li class="skill">JavaScript</li>
-                  <li class="skill">NodeJS</li>
+                  <li class="skill">Vanilla JS</li>
+                  <li class="skill">Webpack</li>
                 </ul>
               </div>
               <div class="link-container">
@@ -162,11 +162,11 @@
               </div>
             </div>
             <div class="button-group">
-              <label for="lingpal-options">Options</label>
+              <label for="lingpal-options" role="button" tabindex="0">Options</label>
               <input type="radio" value="lingpal_options" name="lingpal" id="lingpal-options">
-              <label for="lingpal-notes">Notes</label>
+              <label for="lingpal-notes" role="button" tabindex="0">Notes</label>
               <input type="radio" value="lingpal_notes" name="lingpal" id="lingpal-notes">
-              <label for="lingpal-chat">Chat</label>
+              <label for="lingpal-chat" role="button" tabindex="0">Chat</label>
               <input type="radio" value="lingpal_chat" name="lingpal" id="lingpal-chat">
             </div>
           </div>
@@ -216,11 +216,11 @@
               </div>
             </div>
             <div class="button-group">
-              <label for="pet-home-filter">Search</label>
+              <label for="pet-home-filter" role="button" tabindex="0">Search</label>
               <input type="radio" value="pet_home_search" name="pet-home" id="pet-home-filter">
-              <label for="pet-home-voice">Filter</label>
+              <label for="pet-home-voice" role="button" tabindex="0">Filter</label>
               <input type="radio" value="pet_home_filter" name="pet-home" id="pet-home-voice">
-              <label for="pet-home-create">Details</label>
+              <label for="pet-home-create" role="button" tabindex="0">Details</label>
               <input type="radio" value="pet_home_details" name="pet-home" id="pet-home-create">
             </div>
           </div>
@@ -267,11 +267,11 @@
               </div>
             </div>
             <div class="button-group">
-              <label for="recipear-filter">Filter</label>
+              <label for="recipear-filter" role="button" tabindex="0">Filter</label>
               <input type="radio" value="recipear_filter" name="recipear" id="recipear-filter">
-              <label for="recipear-voice">Voice</label>
+              <label for="recipear-voice" role="button" tabindex="0">Voice</label>
               <input type="radio" value="recipear_voice" name="recipear" id="recipear-voice">
-              <label for="recipear-create">Create</label>
+              <label for="recipear-create" role="button" tabindex="0">Create</label>
               <input type="radio" value="recipear_create" name="recipear" id="recipear-create">
             </div>
           </div>
