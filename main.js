@@ -12,7 +12,7 @@ const messageErrorMessage = document.querySelector(".message-error-message");
 
 const navItemContainer = document.querySelector(".nav-items");
 const navItems = navItemContainer.querySelectorAll("span");
-const hamburger = document.querySelector(".lines");
+const hamburger = document.querySelector(".hamburger");
 const navCollapseTexts = document.querySelectorAll(".nav-item-collapse-text");
 const toggleButton = document.querySelector(".toggle-nav");
 

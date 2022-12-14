@@ -35,7 +35,7 @@
           lazyObserver.unobserve(el);
         }
       });
-    }, { rootMargin: "100px" });
+    }, { rootMargin: "200px" });
 
     lazyEls.forEach(function(el) {
       if (el.tagName === "SCRIPT") {
