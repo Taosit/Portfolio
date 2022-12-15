@@ -37,6 +37,7 @@ exports.handler = async (event) => {
     }
 
   } catch (err) {
+    console.log(err);
     return { statusCode: 422, body: JSON.stringify({ message: 'Message failed to send.'}) };
   }
 };
