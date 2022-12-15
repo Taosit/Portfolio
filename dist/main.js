@@ -307,12 +307,19 @@ const sendEmail = async (e) => {
       "Content-Type": "application/json"
     }
   })
-  .then((response) => response.json())
+  .then((response) => {
+    if (response.ok) return response.json();
+    return Promise.reject(response);
+  })
   .then((data) => {
     showSuccessMessage(data.message);
     clearInputs();
   })
-  .catch((error) => showFailureMessage(error.message));
+  .catch((response) => {
+    response.json().then((data) => {
+      showFailureMessage(data.message)
+    })
+  });
 };
 
 sendButton.addEventListener("click", sendEmail)

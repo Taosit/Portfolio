@@ -25,7 +25,7 @@ exports.handler = async (event) => {
 
   try {
     let info = await transporter.sendMail({
-      to: "taosit099@gmail.com",
+      to: AUTH_USER,
       subject: "A message from your website",
       html: `<p>Hi Jingxuan,</p><p>You have a new message from your website.</p><p>Name: ${name}</p><p>Email: ${email}</p><p>Message: ${message}</p>`,
     });
