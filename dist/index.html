@@ -321,9 +321,7 @@
         </div>
       </div>
       <div class="form-container">
-        <form class="contact-card" target="_blank" action="https://formsubmit.co/taosit099@gmail.com" method="POST">
-          <input type="text" name="_honey" style="display:none">
-          <input type="hidden" name="_captcha" value="false">
+        <form class="contact-card">
           <div class="contact-input-group">
             <label for="name">Name</label>
             <input type="text" name="name" id="name" required>
@@ -347,6 +345,14 @@
           </div>
           <button type="submit" class="send-button" disabled>Submit Form</button>
         </form>
+      </div>
+      <div class="message-status-container success-message hidden">
+        <img src="images/success.svg" alt="success">
+        <p class="success-text"></p>
+      </div>
+      <div class="message-status-container failure-message hidden">
+        <img src="images/error.svg" alt="error">
+        <p class="failure-text"></p>
       </div>
       <div class="top-star-container">
         <div class="star green-star"></div>

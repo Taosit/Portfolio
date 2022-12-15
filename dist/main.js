@@ -25,6 +25,12 @@ const projectImageContainers = document.querySelectorAll(".individual-project-im
 
 const buttonGroups = document.querySelectorAll(".button-group");
 
+const successMessageContainer = document.querySelector(".success-message");
+const successText = successMessageContainer.querySelector("p");
+
+const failureMessageContainer = document.querySelector(".failure-message");
+const failureText = failureMessageContainer.querySelector("p");
+
 const MAX_ROTATION = 20;
 
 /*
@@ -256,3 +262,57 @@ nameInput.addEventListener("blur", () => updateErrorMessage("name"))
 emailInput.addEventListener("blur", () => updateErrorMessage("email"));
 messageInput.addEventListener("blur", () => updateErrorMessage("message"));
 
+/*
+------------------Send Email---------------------
+*/
+
+const showSuccessMessage = (message) => {
+  successMessageContainer.classList.remove("hidden");
+  successText.textContent = message;
+}
+
+successMessageContainer.addEventListener("animationend", () => {
+  successMessageContainer.classList.add("hidden");
+  successText.textContent = "";
+})
+
+const showFailureMessage = (message) => {
+  failureMessageContainer.classList.remove("hidden");
+  failureText.textContent = message;
+}
+
+failureMessageContainer.addEventListener("animationend", () => {
+  failureMessageContainer.classList.add("hidden");
+  failureText.textContent = "";
+})
+
+const clearInputs = () => {
+  nameInput.value = "";
+  emailInput.value = "";
+  messageInput.value = "";
+}
+
+const sendEmail = async (e) => {
+  e.preventDefault();
+
+  const url = "/.netlify/functions/sendEmail";
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      name: nameInput.value,
+      email: emailInput.value,
+      message: messageInput.value,
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    showSuccessMessage(data.message);
+    clearInputs();
+  })
+  .catch((error) => showFailureMessage(error.message));
+};
+
+sendButton.addEventListener("click", sendEmail)
