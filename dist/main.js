@@ -1,6 +1,21 @@
-const sendButton = document.querySelector(".send-button");
-const contactCard = document.querySelector(".contact-card");
 const sections = document.querySelectorAll("section");
+
+const navItemContainer = document.querySelector(".nav-items");
+const navItems = navItemContainer.querySelectorAll("span");
+const hamburger = document.querySelector(".hamburger");
+const navCollapseTexts = document.querySelectorAll(".nav-item-collapse-text");
+const toggleButton = document.querySelector(".toggle-nav");
+const navCollapsItemContainer = document.querySelector(".nav-collapse");
+const navCollopasItems = navCollapsItemContainer.querySelectorAll("div");
+
+const airplaneContainer = document.querySelector(".airplane-container");
+const bigCloud = document.querySelector(".big-cloud");
+const smallCloud = document.querySelector(".small-cloud");
+
+const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
+const buttonGroups = document.querySelectorAll(".button-group");
+
+const contactCard = document.querySelector(".contact-card");
 
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
@@ -10,28 +25,15 @@ const nameErrorMessage = document.querySelector(".name-error-message");
 const emailErrorMessage = document.querySelector(".email-error-message");
 const messageErrorMessage = document.querySelector(".message-error-message");
 
-const navItemContainer = document.querySelector(".nav-items");
-const navItems = navItemContainer.querySelectorAll("span");
-const hamburger = document.querySelector(".hamburger");
-const navCollapseTexts = document.querySelectorAll(".nav-item-collapse-text");
-const toggleButton = document.querySelector(".toggle-nav");
-
-const navCollapsItemContainer = document.querySelector(".nav-collapse");
-const navCollopasItems = navCollapsItemContainer.querySelectorAll("div");
-
-const airplaneContainer = document.querySelector(".airplane-container");
-
-const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
-
-const buttonGroups = document.querySelectorAll(".button-group");
+const sendButton = document.querySelector(".send-button");
 
 const successMessageContainer = document.querySelector(".success-message");
 const successText = successMessageContainer.querySelector("p");
-
 const failureMessageContainer = document.querySelector(".failure-message");
 const failureText = failureMessageContainer.querySelector("p");
 
-const MAX_ROTATION = 20;
+const MAX_ROTATION = 15;
+const MAX_DEPLACEMENT = 30;
 
 /*
 ------------------Navbar tabing---------------------
@@ -70,9 +72,6 @@ navCollapseTexts.forEach((item) => {
 */
 const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
-let rotationDegrees = 0;
-let airplaneTimer;
-
 const getCurrentSection = () => {
   let current = "home";
   sections.forEach((section) => {
@@ -94,8 +93,13 @@ const updateNavItems = (currentSection, navItems, activeClassName) => {
 }
 
 /*
-------------------Airplane Rotation---------------------
+------------------Airplane Rotation and Cloud Movement---------------------
 */
+
+let rotationDegrees = 0;
+let baseDeplacement = 0;
+let airplaneTimer;
+let cloudTimer;
 
 const balanceAirplane = () => {
   if (airplaneTimer) return;
@@ -108,30 +112,43 @@ const balanceAirplane = () => {
       clearInterval(airplaneTimer);
       airplaneTimer = null;
     }
-    rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION);
-    rotationDegrees = Math.max(rotationDegrees, -MAX_ROTATION);
+    rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION * 1);
+    rotationDegrees = Math.max(rotationDegrees, MAX_ROTATION * -1.2);
     airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
   }, 1000 / 60)
 }
 
-const rotateAirplane = () => {
-  balanceAirplane()
-  const scrollDirection = scrollY - previousScrollY;
-  rotationDegrees += scrollDirection * -0.02;
-  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
-  previousScrollY = scrollY
+const recoverCloud = () => {
+  if (cloudTimer) return;
+  cloudTimer = setInterval(() => {
+    if (baseDeplacement > 1) {
+      baseDeplacement -= 0.06;
+    } else {
+      clearInterval(cloudTimer);
+      cloudTimer = null;
+    }
+    baseDeplacement = Math.min(baseDeplacement, MAX_DEPLACEMENT);
+    bigCloud.style.transform = `translateX(${baseDeplacement * (-1)}px)`;
+    smallCloud.style.transform = `translateX(${baseDeplacement * 2}px)`;
+  }, 1000 / 60)
 }
 
 let previousScrollY = 0;
 
-window.onscroll = () => {
-  const current = getCurrentSection();
-  
-  updateNavItems(current, navItems, "active");
-  updateNavItems(current, navCollopasItems, "active-item-collapse");
+const animate = () => {
+  const scrollDirection = previousScrollY? scrollY - previousScrollY : 0;
 
-  if (current === "projects" && !isReduced) rotateAirplane();
-};
+  rotationDegrees += scrollDirection * -0.02;
+  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
+
+  baseDeplacement += Math.abs(scrollDirection) * 0.01;
+  bigCloud.style.transform = `translateX(${baseDeplacement * (-1)}px)`;
+  smallCloud.style.transform = `translateX(${baseDeplacement * 2}px)`;
+  
+  previousScrollY = scrollY
+  balanceAirplane()
+  recoverCloud()
+}
 
 /*
 ------------------Project Video Play---------------------
@@ -153,7 +170,7 @@ const playVideo = (videoName, projectImageContainer) => {
   });
 }
 
-[...buttonGroups].forEach((buttonGroup, i) => {
+buttonGroups.forEach((buttonGroup, i) => {
   buttonGroup.addEventListener("click", (e) => {
     if (e.target.tagName === "LABEL")  return;
     const videoName = e.target.value;
@@ -171,6 +188,25 @@ const playVideo = (videoName, projectImageContainer) => {
     })
   })
 })
+
+/*
+------------------Scroll Events for Nav Updates, Animation and Video Play---------------------
+*/
+
+let firstView = true;
+
+window.onscroll = () => {
+  const current = getCurrentSection();
+  
+  updateNavItems(current, navItems, "active");
+  updateNavItems(current, navCollopasItems, "active-item-collapse");
+
+  if (current === "projects" && !isReduced) animate();
+  if (current === "projects" && firstView) {
+    // play first video
+    firstView = false;
+  }
+};
 
 /*
 ------------------Form Validation---------------------
