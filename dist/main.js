@@ -157,6 +157,7 @@ const animate = () => {
 const playVideo = (videoName, projectImageContainer) => {
   const video = document.createElement("video");
   video.src = `videos/${videoName}.mp4`;
+  video.muted = true;
   if (projectImageContainer.children.length === 3) {
     projectImageContainer.children[2].remove();
   }
@@ -203,7 +204,9 @@ window.onscroll = () => {
 
   if (current === "projects" && !isReduced) animate();
   if (current === "projects" && firstView) {
-    // play first video
+    const firstVideoRadio = buttonGroups[0].querySelector("input");
+    firstVideoRadio.checked = true;
+    playVideo(firstVideoRadio.value, projectImageContainers[0]);
     firstView = false;
   }
 };
