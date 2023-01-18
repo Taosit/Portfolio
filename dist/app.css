@@ -488,7 +488,7 @@ p + p {
     display: flex;
     flex-direction: column;
     max-width: 400px;;
-    gap: 2em;
+    gap: 3em;
 }
 
 .page-bottom-overlay {
@@ -513,7 +513,7 @@ p + p {
 }
 
 .lingpal {
-    --hue: 28;
+    --hue: 190;
 }
 
 .project-card {
