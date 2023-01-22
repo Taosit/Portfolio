@@ -1,12 +1,11 @@
 const sections = document.querySelectorAll("section");
 
 const navItemContainer = document.querySelector(".nav-items");
-const navItems = navItemContainer.querySelectorAll("span");
+const navItems = navItemContainer.querySelectorAll("a");
 const hamburger = document.querySelector(".hamburger");
-const navCollapseTexts = document.querySelectorAll(".nav-item-collapse-text");
 const toggleButton = document.querySelector(".toggle-nav");
 const navCollapsItemContainer = document.querySelector(".nav-collapse");
-const navCollopasItems = navCollapsItemContainer.querySelectorAll("div");
+const navCollopasItems = navCollapsItemContainer.querySelectorAll("a");
 
 const airplaneContainer = document.querySelector(".airplane-container");
 const bigCloud = document.querySelector(".big-cloud");
@@ -36,36 +35,45 @@ const MAX_ROTATION = 15;
 const MAX_DEPLACEMENT = 30;
 
 /*
-------------------Navbar tabing---------------------
+------------------Navbar Toggle ---------------------
 */
 
+let isNavOpen = false;
+
 const showNav = () => {
-  toggleButton.setAttribute("checked", "true");
-  navCollapseTexts.forEach((item) => {
-    item.setAttribute("tabindex", "0");
+  navCollapsItemContainer.ariaHidden = false;
+  navCollopasItems.forEach((item) => {
+    item.style.display = "flex";
   });
-  hamburger.dataset.state = "open";
-}
+  hamburger.classList.add("active");
+  navCollapsItemContainer.classList.add("active");
+  isNavOpen = true;
+};
 
 const hideNav = () => {
-  toggleButton.removeAttribute("checked");
-  navCollapseTexts.forEach((item) => {
-    item.setAttribute("tabindex", "-1");
-  });
-  hamburger.dataset.state = "closed";
+  hamburger.classList.remove("active");
+  navCollapsItemContainer.classList.remove("active");
+  isNavOpen = false;
+  setTimeout(() => {
+    navCollopasItems.forEach((item) => {
+      item.style.display = "none";
+    });
+    navCollapsItemContainer.ariaHidden = true;
+  }, 500);
+};
+
+const toggleNav = () => {
+  if (isNavOpen) hideNav();
+  else showNav();
 }
 
-hamburger.addEventListener("keydown", (e) => {
-  if (e.key !== "Enter") return;
-  if (hamburger.dataset.state === "closed") showNav(); 
-  else hideNav();
+hamburger.addEventListener("click", toggleNav);
+window.addEventListener("click", (e) => {
+  if (e.target.closest(".nav-collapse") || e.target.closest(".hamburger")) return;
+  if (isNavOpen) toggleNav();
 });
 
-navCollapseTexts.forEach((item) => {
-  item.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") hideNav();
-  });
-});
+navCollapsItemContainer.addEventListener("click", hideNav);
 
 /*
 ------------------Navbar Update---------------------
@@ -158,11 +166,13 @@ const playVideo = (videoName, projectImageContainer) => {
   const video = document.createElement("video");
   video.src = `videos/${videoName}.mp4`;
   video.muted = true;
-  if (projectImageContainer.children.length === 3) {
-    projectImageContainer.children[2].remove();
-  }
-  projectImageContainer.append(video);
-  video.play();
+  video.addEventListener("loadeddata", () => {
+    if (projectImageContainer.children.length === 3) {
+      projectImageContainer.children[2].remove();
+    }
+    projectImageContainer.append(video);
+    video.play();
+  });
   video.addEventListener('ended', () => {
     video.classList.add("opacity-zero");
     setTimeout(() => {
@@ -200,7 +210,7 @@ window.onscroll = () => {
   const current = getCurrentSection();
   
   updateNavItems(current, navItems, "active");
-  updateNavItems(current, navCollopasItems, "active-item-collapse");
+  updateNavItems(current, navCollopasItems, "active");
 
   if (current === "projects" && !isReduced) animate();
   if (current === "projects" && firstView) {
