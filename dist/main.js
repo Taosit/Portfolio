@@ -175,6 +175,7 @@ const playVideo = (videoName, projectIndex) => {
     playButtons[projectIndex].classList.add("hidden");
   });
   projectImageContainer.addEventListener("mouseover", (e) => {
+    console.log("paused", video.paused, e.target);
     if (video.paused) return;
     projectImageContainer.querySelector(".pause-button").classList.remove("hidden");
   });
@@ -222,7 +223,6 @@ const handlePlayVideo = (e) => {
     }
   } else {
     const projectName = e.target.nextElementSibling.src.split("/").pop().split(".")[0];
-    console.log({projectName})
     const projectIndex = projectNames.indexOf(projectName);
     const firstVideoName = videoNames[projectIndex][0];
     playVideo(firstVideoName, projectIndex);
