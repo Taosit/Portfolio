@@ -9,7 +9,7 @@ const navCollopasItems = navCollapsItemContainer.querySelectorAll("a");
 
 const airplaneContainer = document.querySelector(".airplane-container");
 const bigCloud = document.querySelector(".big-cloud");
-const smallCloud = document.querySelector(".small-cloud");
+// const smallCloud = document.querySelector(".small-cloud");
 
 const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
 const buttonGroups = document.querySelectorAll(".button-group");
@@ -105,58 +105,46 @@ const updateNavItems = (currentSection, navItems, activeClassName) => {
 */
 
 let rotationDegrees = 0;
-let baseDeplacement = 0;
-let airplaneTimer;
-let cloudTimer;
+let baseValue = 0.5;
+let acceleration = 0;
 
-const balanceAirplane = () => {
-  if (airplaneTimer) return;
-  airplaneTimer = setInterval(() => {
-    if (rotationDegrees > 1) {
-      rotationDegrees -= 0.08;
-    } else if (rotationDegrees < 0) {
-      rotationDegrees += 0.08;
-    } else {
-      clearInterval(airplaneTimer);
-      airplaneTimer = null;
-    }
-    rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION * 1);
-    rotationDegrees = Math.max(rotationDegrees, MAX_ROTATION * -1.2);
-    airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
-  }, 1000 / 60)
+const moveAirplane = () => {
+  if (rotationDegrees > 1) {
+    rotationDegrees -= 0.08;
+  } else if (rotationDegrees < 0) {
+    rotationDegrees += 0.08;
+  } else {
+    airplaneTimer = null;
+  }
+  rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION * 1);
+  rotationDegrees = Math.max(rotationDegrees, MAX_ROTATION * -1.2);
+  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`;
+  requestAnimationFrame(moveAirplane);
 }
 
-const recoverCloud = () => {
-  if (cloudTimer) return;
-  cloudTimer = setInterval(() => {
-    if (baseDeplacement > 1) {
-      baseDeplacement -= 0.06;
-    } else {
-      clearInterval(cloudTimer);
-      cloudTimer = null;
-    }
-    baseDeplacement = Math.min(baseDeplacement, MAX_DEPLACEMENT);
-    bigCloud.style.transform = `translateX(${baseDeplacement * (-1)}px)`;
-    smallCloud.style.transform = `translateX(${baseDeplacement * 2}px)`;
-  }, 1000 / 60)
+const moveCloud = () => {
+  acceleration = Math.max(0.5, acceleration - 0.02);
+  baseValue = baseValue > 2? 0 : baseValue + acceleration * 0.004;
+  const deplacement = Math.max(0, baseValue * baseValue - 0.3);
+  const opacity = - baseValue * baseValue + 2 * baseValue;
+  const scale = baseValue < 1? 1 : (baseValue - 1) * (baseValue - 1) + 1;
+  bigCloud.style.transform = `translateX(${deplacement * 100}px) scale(${scale})`;
+  bigCloud.style.opacity = opacity;
+  requestAnimationFrame(moveCloud);
 }
 
 let previousScrollY = 0;
 
 const animate = () => {
   const scrollDirection = previousScrollY? scrollY - previousScrollY : 0;
+  previousScrollY = scrollY
 
   rotationDegrees += scrollDirection * -0.02;
-  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`
-
-  baseDeplacement += Math.abs(scrollDirection) * 0.01;
-  bigCloud.style.transform = `translateX(${baseDeplacement * (-1)}px)`;
-  smallCloud.style.transform = `translateX(${baseDeplacement * 2}px)`;
-  
-  previousScrollY = scrollY
-  balanceAirplane()
-  recoverCloud()
+  acceleration = Math.min(4, acceleration + Math.abs(scrollDirection) * 0.01);
 }
+
+moveCloud();
+moveAirplane();
 
 /*
 ------------------Project Video Play---------------------
