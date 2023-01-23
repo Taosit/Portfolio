@@ -520,6 +520,26 @@ p + p {
     overflow: hidden;
 }
 
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 5em;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.pause-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 5em;
+    cursor: pointer;
+    z-index: 1;
+}
+
 .individual-project-image-container:where(img, video) {
     width: 100%;
     object-fit: cover;

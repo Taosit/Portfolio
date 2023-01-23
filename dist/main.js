@@ -9,10 +9,11 @@ const navCollopasItems = navCollapsItemContainer.querySelectorAll("a");
 
 const airplaneContainer = document.querySelector(".airplane-container");
 const bigCloud = document.querySelector(".big-cloud");
-// const smallCloud = document.querySelector(".small-cloud");
 
 const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
 const buttonGroups = document.querySelectorAll(".button-group");
+const playButtons = document.querySelectorAll(".play-button");
+const pauseButtons = document.querySelectorAll(".pause-button");
 
 const contactCard = document.querySelector(".contact-card");
 
@@ -150,22 +151,49 @@ moveAirplane();
 ------------------Project Video Play---------------------
 */
 
-const playVideo = (videoName, projectImageContainer) => {
+const projectNames = ["lingpal", "recipear", "ready", "pet_home"];
+
+const videoNames = [
+  ['lingpal_options', 'lingpal_notes', 'lingpal_chat'],
+  ['recipear_filter', 'recipear_voice', 'recipear_create'],
+  ['ready_phonetics', 'ready_meanings', 'ready_download'],
+  ['pet_home_search', 'pet_home_filter', 'pet_home_details'],
+]
+
+const playVideo = (videoName, projectIndex) => {
+  const projectImageContainer = projectImageContainers[projectIndex];
+  const radio = projectImageContainer.parentElement.querySelector(`#${videoName}`);
+  radio.checked = true;
   const video = document.createElement("video");
   video.src = `videos/${videoName}.mp4`;
   video.muted = true;
   video.addEventListener("loadeddata", () => {
-    if (projectImageContainer.children.length === 3) {
-      projectImageContainer.children[2].remove();
-    }
+    const oldVideo = projectImageContainer.querySelector("video");
+    if (oldVideo) oldVideo.remove();
     projectImageContainer.append(video);
     video.play();
+    playButtons[projectIndex].classList.add("hidden");
+  });
+  projectImageContainer.addEventListener("mouseover", (e) => {
+    if (video.paused) return;
+    projectImageContainer.querySelector(".pause-button").classList.remove("hidden");
+  });
+  projectImageContainer.addEventListener("mouseleave", () => {
+    if (video.paused) return;
+    projectImageContainer.querySelector(".pause-button").classList.add("hidden");
   });
   video.addEventListener('ended', () => {
-    video.classList.add("opacity-zero");
-    setTimeout(() => {
-      video.remove()
-    }, 1000);
+    const videoIndex = videoNames[projectIndex].indexOf(videoName);
+    if (videoIndex === 2) {
+      video.classList.add("opacity-zero");
+      radio.checked = false;
+      setTimeout(() => {
+        video.remove()
+      }, 1000);
+    } else {
+      const nextVideoName = videoNames[projectIndex][videoIndex + 1];
+      playVideo(nextVideoName, projectIndex);
+    }
   });
 }
 
@@ -173,7 +201,7 @@ buttonGroups.forEach((buttonGroup, i) => {
   buttonGroup.addEventListener("click", (e) => {
     if (e.target.tagName === "LABEL")  return;
     const videoName = e.target.value;
-    playVideo(videoName, projectImageContainers[i]);
+    playVideo(videoName, i);
   })
 
   const labels = buttonGroup.querySelectorAll("label");
@@ -181,10 +209,49 @@ buttonGroups.forEach((buttonGroup, i) => {
     label.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
       const videoName = label.getAttribute("for");
-      const radio = buttonGroup.querySelector(`#${videoName}`);
-      radio.checked = true;
-      playVideo(videoName, projectImageContainers[i]);
+      playVideo(videoName, i);
     })
+  })
+})
+
+const handlePlayVideo = (e) => {
+  const existingVideo = e.target.parentElement.querySelector("video");
+  if (existingVideo) {
+    if (existingVideo.paused) {
+      existingVideo.play();
+    }
+  } else {
+    const projectName = e.target.nextElementSibling.src.split("/").pop().split(".")[0];
+    console.log({projectName})
+    const projectIndex = projectNames.indexOf(projectName);
+    const firstVideoName = videoNames[projectIndex][0];
+    playVideo(firstVideoName, projectIndex);
+  }
+  e.target.classList.add("hidden");
+}
+
+const handlePauseVideo = (pauseButton) => {
+  const projectName = pauseButton.dataset.project;
+  const projectIndex = projectNames.indexOf(projectName);
+  const playingVideo = projectImageContainers[projectIndex].querySelector("video")
+  playingVideo.pause()
+  pauseButton.classList.add("hidden");
+  playButtons[projectIndex].classList.remove("hidden");
+}
+
+playButtons.forEach(playButton => {
+  playButton.addEventListener("click", handlePlayVideo)
+  playButton.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    handlePlayVideo(e);
+  })
+})
+
+pauseButtons.forEach(pauseButton => {
+  pauseButton.addEventListener("click", () => handlePauseVideo(pauseButton))
+  pauseButton.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    handlePauseVideo(pauseButton)
   })
 })
 
@@ -204,7 +271,7 @@ window.onscroll = () => {
   if (current === "projects" && firstView) {
     const firstVideoRadio = buttonGroups[0].querySelector("input");
     firstVideoRadio.checked = true;
-    playVideo(firstVideoRadio.value, projectImageContainers[0]);
+    playVideo(firstVideoRadio.value, 0);
     firstView = false;
   }
 };
@@ -263,7 +330,8 @@ nameInput.addEventListener("input", (e) => {
 emailInput.addEventListener("input", (e) => {
   const inputValue = e.target.value;
 
-  const regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+  const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+
   if (inputValue.length === 0) {
     inputChecker.email.isValid = false;
     inputChecker.email.message = "Email must be filled.";
