@@ -123,7 +123,7 @@ const moveAirplane = () => {
 }
 
 const moveCloud = () => {
-  acceleration = Math.max(0.5, acceleration - 0.02);
+  acceleration = Math.max(0.5, acceleration - 0.03);
   baseValue = baseValue > 2? 0 : baseValue + acceleration * 0.004;
   const deplacement = Math.max(0, baseValue * baseValue - 0.3);
   const opacity = - baseValue * baseValue + 2 * baseValue;
