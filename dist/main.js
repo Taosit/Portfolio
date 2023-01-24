@@ -7,7 +7,7 @@ const toggleButton = document.querySelector(".toggle-nav");
 const navCollapsItemContainer = document.querySelector(".nav-collapse");
 const navCollopasItems = navCollapsItemContainer.querySelectorAll("a");
 
-const airplaneContainer = document.querySelector(".airplane-container");
+const airplane = document.querySelector(".airplane-container img");
 const bigCloud = document.querySelector(".big-cloud");
 
 const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
@@ -119,7 +119,7 @@ const moveAirplane = () => {
   }
   rotationDegrees = Math.min(rotationDegrees, MAX_ROTATION * 1);
   rotationDegrees = Math.max(rotationDegrees, MAX_ROTATION * -1.2);
-  airplaneContainer.style.transform = `rotate(${rotationDegrees}deg)`;
+  airplane.style.transform = `rotate(${rotationDegrees}deg)`;
   requestAnimationFrame(moveAirplane);
 }
 
@@ -171,6 +171,7 @@ const playVideo = (videoName, projectIndex) => {
     const oldVideo = projectImageContainer.querySelector("video");
     if (oldVideo) oldVideo.remove();
     projectImageContainer.append(video);
+    projectImageContainer.querySelector(".prompt-container").classList.add("hidden");
     video.play();
     playButtons[projectIndex].classList.add("hidden");
   });
@@ -185,12 +186,10 @@ const playVideo = (videoName, projectIndex) => {
   video.addEventListener('ended', () => {
     const videoIndex = videoNames[projectIndex].indexOf(videoName);
     if (videoIndex === 2) {
-      video.classList.add("opacity-zero");
       projectImageContainer.querySelector(".pause-button").classList.add("hidden");
       radio.checked = false;
-      setTimeout(() => {
-        video.remove()
-      }, 500);
+      video.remove()
+      projectImageContainer.querySelector(".prompt-container").classList.remove("hidden");
     } else {
       const nextVideoName = videoNames[projectIndex][videoIndex + 1];
       playVideo(nextVideoName, projectIndex);

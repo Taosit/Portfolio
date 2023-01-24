@@ -451,10 +451,15 @@ p + p {
 
 .airplane-container {
     position: absolute;
-    top:0;
+    top: -50%;
     width: 80%;
-    right: 0;
-    translate: 20% -30%;
+    aspect-ratio: 5/3;
+    right: -5vw;
+    overflow: hidden;
+}
+
+.airplane-container img {
+    translate: 20% 30%;
 }
 
 @media (width >= 768px) {
@@ -465,6 +470,12 @@ p + p {
     }
     .big-cloud {
         bottom: 20%;
+    }
+    .airplane-container {
+        right: min(-10vw, calc(50vw - 600px));
+    }
+    .airplane-container img {
+        translate: 0 30%;
     }
 }
 
@@ -542,6 +553,8 @@ p + p {
 
 .project-image {
     grid-row: 1/2;
+    height: 100%;
+    object-fit: cover;
 }
 
 .play-button {
@@ -578,29 +591,12 @@ p + p {
 }
 
 
-.image-overlay {
+.prompt-container {
     width: 100%;
     position: absolute;
     bottom: 0;
     background-image: linear-gradient(180deg,  rgba(255, 255, 255, 0) 0.01%, #3e3a33b7 50.02%, #3e3a33fc 100.02%);
     padding: 1em 0 0.3em 0;
-}
-
-.prompt-container {
-    font-weight: 400;
-}
-
-.animate-prompt {
-    animation: slide 5s linear infinite;
-}
-
-@keyframes slide {
-    from {
-        translate: -100% 0;
-    }
-    to {
-        translate: 100% 0;
-    }
 }
 
 .prompt-container p {
@@ -638,20 +634,22 @@ p + p {
 
 .info-half {
     container: info-container / inline-size;
-    padding: 3em 1em 1em 1em;
+    padding: 0 1.5rem;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .info-container {
     height: 100%;
     display: grid;
     grid-template-rows: 1fr auto;
+    flex-grow: 1;
 }
 
 .project-name {
-    position: absolute;
-    top: 0.6em;
-    right: 1em;
+    margin-left: auto;
+    margin-top: 1rem;
     font-size: 20px;
     font-weight: 900;
     color: #756F69;
@@ -659,9 +657,10 @@ p + p {
 }
 
 .project-info {
+    padding-top: 0.75em;
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.75em;
 }
 
 .project-description p {
@@ -686,21 +685,24 @@ p + p {
 }
 
 .link-container {
-    margin-top: 1em;
+    padding: 0.75rem 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    font-size: 16px;
+    margin-top: 0.5rem;
 }
 
 .link-container a {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 1em;
     align-items: center;
     font-weight: 600;
     font-size: 18px;
 }
 
 .project-icon-container {
-    width: 1.6em;
+    width: 1.5rem;
     aspect-ratio: 1 / 1;
 }
 
@@ -790,7 +792,7 @@ p + p {
 .contact-card {
     position: relative;
     width: calc(100% - 2em);
-    margin: 3em auto;
+    margin: 3.6em auto;
     height: min(60vh, 520px);
     padding: 2.5em 2em;
     border-radius: 1.2em; 
@@ -1051,7 +1053,6 @@ textarea {
         grid-template-columns: 1fr 1fr;
         column-gap: 2em;
         height: auto;
-        margin-top: 2em;
     }
     .contact-card > *:not(:has(input)) {
         grid-column: span 2;
