@@ -412,53 +412,70 @@ p + p {
     position: sticky;
     top: 20%;
     left: 60%;
-    width: 30vmax;
+    width: 40vmax;
     height: 12vmax;
     z-index: -1;
 }
 
 .clouds {
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 10%;
+    right: -5vw;
     width: 100%;
-    height: 100%;
+    height: 250%;
+    overflow: hidden;
 }
 
 .big-cloud {
     position: absolute;
-    bottom: -20%;
+    bottom: 10%;
     width: 100%;
+    max-width: 400px;
     aspect-ratio: 5 / 3;
     border-radius: 50%;
     background-color: rgba(196, 240, 245, 0.3);
-    filter: blur(25px);
-    transform: rotate(-2.88deg);
+    filter: blur(30px);
 }
 
 .small-cloud {
     position: absolute;
-    bottom: 0;
-    right: -25%;
-    width: 70%;
+    bottom: 30%;
+    right: 0;
+    width: 50%;
     border-radius: 50%;
     aspect-ratio: 3 / 2;
     background: rgba(196, 240, 245, 0.2);
-    filter: blur(20px);
+    filter: blur(25px);
     rotate: 4deg;
 }
 
 .airplane-container {
     position: absolute;
     top:0;
+    width: 80%;
     right: 0;
     translate: 20% -30%;
+}
+
+@media (width >= 768px) {
+    .clouds {
+        top: -10%;
+        right: min(-10vw, calc(50vw - 600px));
+        height: 300%;
+    }
+    .big-cloud {
+        bottom: 20%;
+    }
 }
 
 @media (width >= 1024px) {
     .project-image-container {
         translate: 0 -30%;
         height: 10vmax;
+    }
+    .clouds {
+        top: -30%;
+        height: 350%;
     }
 }
 

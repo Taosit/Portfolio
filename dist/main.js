@@ -44,7 +44,7 @@ let isNavOpen = false;
 const showNav = () => {
   navCollapsItemContainer.ariaHidden = false;
   navCollopasItems.forEach((item) => {
-    item.style.display = "flex";
+    item.classList.remove("hidden")
   });
   hamburger.classList.add("active");
   navCollapsItemContainer.classList.add("active");
@@ -57,7 +57,7 @@ const hideNav = () => {
   isNavOpen = false;
   setTimeout(() => {
     navCollopasItems.forEach((item) => {
-      item.style.display = "none";
+      item.classList.add("hidden")
     });
     navCollapsItemContainer.ariaHidden = true;
   }, 500);
@@ -128,8 +128,8 @@ const moveCloud = () => {
   baseValue = baseValue > 2? 0 : baseValue + acceleration * 0.004;
   const deplacement = Math.max(0, baseValue * baseValue - 0.3);
   const opacity = - baseValue * baseValue + 2 * baseValue;
-  const scale = baseValue < 1? 1 : (baseValue - 1) * (baseValue - 1) + 1;
-  bigCloud.style.transform = `translateX(${deplacement * 100}px) scale(${scale})`;
+  const scale = baseValue < 1? 0.7 : (baseValue - 1) * (baseValue - 1) + 0.7;
+  bigCloud.style.transform = `translateX(${deplacement * 100}px) scale(${scale}) rotate(-2.88deg)`;
   bigCloud.style.opacity = opacity;
   requestAnimationFrame(moveCloud);
 }
@@ -174,8 +174,7 @@ const playVideo = (videoName, projectIndex) => {
     video.play();
     playButtons[projectIndex].classList.add("hidden");
   });
-  projectImageContainer.addEventListener("mouseover", (e) => {
-    console.log("paused", video.paused, e.target);
+  projectImageContainer.addEventListener("mouseover", () => {
     if (video.paused) return;
     projectImageContainer.querySelector(".pause-button").classList.remove("hidden");
   });
@@ -187,10 +186,11 @@ const playVideo = (videoName, projectIndex) => {
     const videoIndex = videoNames[projectIndex].indexOf(videoName);
     if (videoIndex === 2) {
       video.classList.add("opacity-zero");
+      projectImageContainer.querySelector(".pause-button").classList.add("hidden");
       radio.checked = false;
       setTimeout(() => {
         video.remove()
-      }, 1000);
+      }, 500);
     } else {
       const nextVideoName = videoNames[projectIndex][videoIndex + 1];
       playVideo(nextVideoName, projectIndex);
@@ -231,9 +231,12 @@ const handlePlayVideo = (e) => {
 }
 
 const handlePauseVideo = (pauseButton) => {
+  if (pauseButton.classList.contains("hidden")) return;
   const projectName = pauseButton.dataset.project;
   const projectIndex = projectNames.indexOf(projectName);
   const playingVideo = projectImageContainers[projectIndex].querySelector("video")
+  if (!playingVideo) console.log({projectName})
+  // FIX: cannot read property pause of null
   playingVideo.pause()
   pauseButton.classList.add("hidden");
   playButtons[projectIndex].classList.remove("hidden");
