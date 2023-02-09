@@ -465,14 +465,14 @@ p + p {
 @media (width >= 768px) {
     .clouds {
         top: -10%;
-        right: min(-10vw, calc(50vw - 600px));
+        right: min(-10vw, calc(600px - 50vw));
         height: 300%;
     }
     .big-cloud {
         bottom: 20%;
     }
     .airplane-container {
-        right: min(-10vw, calc(50vw - 600px));
+        right: min(-10vw, calc(600px - 50vw));
     }
     .airplane-container img {
         translate: 0 30%;
@@ -744,7 +744,7 @@ p + p {
         width: 80%;
     }
     .page-bottom-overlay {
-        translate: 10vw;
+        translate: max(10vw, calc(50vw - 600px));
     }
     .project-card {
         flex-direction: row;
