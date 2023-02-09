@@ -549,11 +549,12 @@ p + p {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+    align-items: stretch;
 }
 
 .project-image {
     grid-row: 1/2;
-    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
