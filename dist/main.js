@@ -16,6 +16,7 @@ const projectImageContainers = document.querySelectorAll(
 const buttonGroups = document.querySelectorAll(".button-group");
 const playButtons = document.querySelectorAll(".play-button");
 const pauseButtons = document.querySelectorAll(".pause-button");
+const videoLoaders = document.querySelectorAll(".video-loader");
 
 const contactCard = document.querySelector(".contact-card");
 
@@ -175,6 +176,7 @@ const videoNames = [
 ];
 
 const playVideo = (videoName, projectIndex) => {
+  videoLoaders[projectIndex].classList.remove("hidden");
   const projectImageContainer = projectImageContainers[projectIndex];
   const radio = projectImageContainer.parentElement.querySelector(
     `#${videoName}`
@@ -193,6 +195,7 @@ const playVideo = (videoName, projectIndex) => {
     });
   }
   video.addEventListener("loadeddata", () => {
+    videoLoaders[projectIndex].classList.add("hidden");
     const oldVideo = projectImageContainer.querySelector("video");
     if (oldVideo) oldVideo.remove();
     projectImageContainer.append(video);
@@ -216,7 +219,7 @@ const playVideo = (videoName, projectIndex) => {
   });
   video.addEventListener("ended", () => {
     const videoIndex = videoNames[projectIndex].indexOf(videoName);
-    if (videoIndex === 2) {
+    if (videoIndex === 2 || /iPad|iPhone|iPod/.test(navigator.userAgent)) {
       projectImageContainer
         .querySelector(".pause-button")
         .classList.add("hidden");

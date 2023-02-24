@@ -585,6 +585,15 @@ p + p {
     z-index: 1;
 }
 
+.video-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 5em;
+    height: 5em;
+}
+
 .individual-project-image-container:where(img, video) {
     width: 100%;
     object-fit: cover;
