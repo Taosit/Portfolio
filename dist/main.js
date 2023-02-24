@@ -10,7 +10,9 @@ const navCollopasItems = navCollapsItemContainer.querySelectorAll("a");
 const airplane = document.querySelector(".airplane-container img");
 const bigCloud = document.querySelector(".big-cloud");
 
-const projectImageContainers = document.querySelectorAll(".individual-project-image-container");
+const projectImageContainers = document.querySelectorAll(
+  ".individual-project-image-container"
+);
 const buttonGroups = document.querySelectorAll(".button-group");
 const playButtons = document.querySelectorAll(".play-button");
 const pauseButtons = document.querySelectorAll(".pause-button");
@@ -44,7 +46,7 @@ let isNavOpen = false;
 const showNav = () => {
   navCollapsItemContainer.ariaHidden = false;
   navCollopasItems.forEach((item) => {
-    item.classList.remove("hidden")
+    item.classList.remove("hidden");
   });
   hamburger.classList.add("active");
   navCollapsItemContainer.classList.add("active");
@@ -57,7 +59,7 @@ const hideNav = () => {
   isNavOpen = false;
   setTimeout(() => {
     navCollopasItems.forEach((item) => {
-      item.classList.add("hidden")
+      item.classList.add("hidden");
     });
     navCollapsItemContainer.ariaHidden = true;
   }, 500);
@@ -66,11 +68,12 @@ const hideNav = () => {
 const toggleNav = () => {
   if (isNavOpen) hideNav();
   else showNav();
-}
+};
 
 hamburger.addEventListener("click", toggleNav);
 window.addEventListener("click", (e) => {
-  if (e.target.closest(".nav-collapse") || e.target.closest(".hamburger")) return;
+  if (e.target.closest(".nav-collapse") || e.target.closest(".hamburger"))
+    return;
   if (isNavOpen) toggleNav();
 });
 
@@ -79,27 +82,33 @@ navCollapsItemContainer.addEventListener("click", hideNav);
 /*
 ------------------Navbar Update---------------------
 */
-const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true || window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
+const isReduced =
+  window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+  window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
 const getCurrentSection = () => {
   let current = "home";
   sections.forEach((section) => {
     const sectionTop = section.offsetTop;
-    if (scrollY >= sectionTop - 48 ) {
-      current = section.getAttribute("id"); 
+    if (scrollY >= sectionTop - 48) {
+      current = section.getAttribute("id");
     }
   });
   return current;
-}
+};
 
 const updateNavItems = (currentSection, navItems, activeClassName) => {
   navItems.forEach((span) => {
     span.classList.remove(activeClassName);
-    if ([...span.classList].some(className => className.includes(currentSection))) {
+    if (
+      [...span.classList].some((className) =>
+        className.includes(currentSection)
+      )
+    ) {
       span.classList.add(activeClassName);
     }
   });
-}
+};
 
 /*
 ------------------Airplane Rotation and Cloud Movement---------------------
@@ -121,28 +130,30 @@ const moveAirplane = () => {
   rotationDegrees = Math.max(rotationDegrees, MAX_ROTATION * -1.2);
   airplane.style.transform = `rotate(${rotationDegrees}deg)`;
   requestAnimationFrame(moveAirplane);
-}
+};
 
 const moveCloud = () => {
   acceleration = Math.max(0.5, acceleration - 0.03);
-  baseValue = baseValue > 2? 0 : baseValue + acceleration * 0.004;
+  baseValue = baseValue > 2 ? 0 : baseValue + acceleration * 0.004;
   const deplacement = Math.max(0, baseValue * baseValue - 0.3);
-  const opacity = - baseValue * baseValue + 2 * baseValue;
-  const scale = baseValue < 1? 0.7 : (baseValue - 1) * (baseValue - 1) + 0.7;
-  bigCloud.style.transform = `translateX(${deplacement * 100}px) scale(${scale}) rotate(-2.88deg)`;
+  const opacity = -baseValue * baseValue + 2 * baseValue;
+  const scale = baseValue < 1 ? 0.7 : (baseValue - 1) * (baseValue - 1) + 0.7;
+  bigCloud.style.transform = `translateX(${
+    deplacement * 100
+  }px) scale(${scale}) rotate(-2.88deg)`;
   bigCloud.style.opacity = opacity;
   requestAnimationFrame(moveCloud);
-}
+};
 
 let previousScrollY = 0;
 
 const animate = () => {
-  const scrollDirection = previousScrollY? scrollY - previousScrollY : 0;
-  previousScrollY = scrollY
+  const scrollDirection = previousScrollY ? scrollY - previousScrollY : 0;
+  previousScrollY = scrollY;
 
   rotationDegrees += scrollDirection * -0.02;
   acceleration = Math.min(4, acceleration + Math.abs(scrollDirection) * 0.01);
-}
+};
 
 moveCloud();
 moveAirplane();
@@ -154,55 +165,70 @@ moveAirplane();
 const projectNames = ["lingpal", "recipear", "ready", "pet_home"];
 
 const videoNames = [
-  ['lingpal_options', 'lingpal_notes', 'lingpal_chat'],
-  ['recipear_filter', 'recipear_voice', 'recipear_create'],
-  ['ready_phonetics', 'ready_meanings', 'ready_download'],
-  ['pet_home_search', 'pet_home_filter', 'pet_home_details'],
-]
+  ["lingpal_options", "lingpal_notes", "lingpal_chat"],
+  ["recipear_filter", "recipear_voice", "recipear_create"],
+  ["ready_phonetics", "ready_meanings", "ready_download"],
+  ["pet_home_search", "pet_home_filter", "pet_home_details"],
+];
 
 const playVideo = (videoName, projectIndex) => {
   const projectImageContainer = projectImageContainers[projectIndex];
-  const radio = projectImageContainer.parentElement.querySelector(`#${videoName}`);
+  const radio = projectImageContainer.parentElement.querySelector(
+    `#${videoName}`
+  );
   radio.checked = true;
   const video = document.createElement("video");
   video.src = `videos/${videoName}.mp4`;
   video.muted = true;
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    video.autoplay = true;
+  }
   video.addEventListener("loadeddata", () => {
     const oldVideo = projectImageContainer.querySelector("video");
     if (oldVideo) oldVideo.remove();
     projectImageContainer.append(video);
-    projectImageContainer.querySelector(".prompt-container").classList.add("hidden");
+    projectImageContainer
+      .querySelector(".prompt-container")
+      .classList.add("hidden");
     video.play();
     playButtons[projectIndex].classList.add("hidden");
   });
   projectImageContainer.addEventListener("mouseover", () => {
     if (video.paused) return;
-    projectImageContainer.querySelector(".pause-button").classList.remove("hidden");
+    projectImageContainer
+      .querySelector(".pause-button")
+      .classList.remove("hidden");
   });
   projectImageContainer.addEventListener("mouseleave", () => {
     if (video.paused) return;
-    projectImageContainer.querySelector(".pause-button").classList.add("hidden");
+    projectImageContainer
+      .querySelector(".pause-button")
+      .classList.add("hidden");
   });
-  video.addEventListener('ended', () => {
+  video.addEventListener("ended", () => {
     const videoIndex = videoNames[projectIndex].indexOf(videoName);
     if (videoIndex === 2) {
-      projectImageContainer.querySelector(".pause-button").classList.add("hidden");
+      projectImageContainer
+        .querySelector(".pause-button")
+        .classList.add("hidden");
       radio.checked = false;
-      video.remove()
-      projectImageContainer.querySelector(".prompt-container").classList.remove("hidden");
+      video.remove();
+      projectImageContainer
+        .querySelector(".prompt-container")
+        .classList.remove("hidden");
     } else {
       const nextVideoName = videoNames[projectIndex][videoIndex + 1];
       playVideo(nextVideoName, projectIndex);
     }
   });
-}
+};
 
 buttonGroups.forEach((buttonGroup, i) => {
   buttonGroup.addEventListener("click", (e) => {
-    if (e.target.tagName === "LABEL")  return;
+    if (e.target.tagName === "LABEL") return;
     const videoName = e.target.value;
     playVideo(videoName, i);
-  })
+  });
 
   const labels = buttonGroup.querySelectorAll("label");
   labels.forEach((label) => {
@@ -210,9 +236,9 @@ buttonGroups.forEach((buttonGroup, i) => {
       if (e.key !== "Enter") return;
       const videoName = label.getAttribute("for");
       playVideo(videoName, i);
-    })
-  })
-})
+    });
+  });
+});
 
 const handlePlayVideo = (e) => {
   const existingVideo = e.target.parentElement.querySelector("video");
@@ -221,41 +247,45 @@ const handlePlayVideo = (e) => {
       existingVideo.play();
     }
   } else {
-    const projectName = e.target.nextElementSibling.src.split("/").pop().split(".")[0];
+    const projectName = e.target.nextElementSibling.src
+      .split("/")
+      .pop()
+      .split(".")[0];
     const projectIndex = projectNames.indexOf(projectName);
     const firstVideoName = videoNames[projectIndex][0];
     playVideo(firstVideoName, projectIndex);
   }
   e.target.classList.add("hidden");
-}
+};
 
 const handlePauseVideo = (pauseButton) => {
   if (pauseButton.classList.contains("hidden")) return;
   const projectName = pauseButton.dataset.project;
   const projectIndex = projectNames.indexOf(projectName);
-  const playingVideo = projectImageContainers[projectIndex].querySelector("video")
-  if (!playingVideo) console.log({projectName})
+  const playingVideo =
+    projectImageContainers[projectIndex].querySelector("video");
+  if (!playingVideo) console.log({ projectName });
   // FIX: cannot read property pause of null
-  playingVideo.pause()
+  playingVideo.pause();
   pauseButton.classList.add("hidden");
   playButtons[projectIndex].classList.remove("hidden");
-}
+};
 
-playButtons.forEach(playButton => {
-  playButton.addEventListener("click", handlePlayVideo)
+playButtons.forEach((playButton) => {
+  playButton.addEventListener("click", handlePlayVideo);
   playButton.addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
     handlePlayVideo(e);
-  })
-})
+  });
+});
 
-pauseButtons.forEach(pauseButton => {
-  pauseButton.addEventListener("click", () => handlePauseVideo(pauseButton))
+pauseButtons.forEach((pauseButton) => {
+  pauseButton.addEventListener("click", () => handlePauseVideo(pauseButton));
   pauseButton.addEventListener("keydown", (e) => {
     if (e.key !== "Enter") return;
-    handlePauseVideo(pauseButton)
-  })
-})
+    handlePauseVideo(pauseButton);
+  });
+});
 
 /*
 ------------------Scroll Events for Nav Updates, Animation and Video Play---------------------
@@ -265,12 +295,13 @@ let firstView = true;
 
 window.onscroll = () => {
   const current = getCurrentSection();
-  
+
   updateNavItems(current, navItems, "active");
   updateNavItems(current, navCollopasItems, "active");
 
   if (current === "projects" && !isReduced) animate();
   if (current === "projects" && firstView) {
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) return;
     const firstVideoRadio = buttonGroups[0].querySelector("input");
     firstVideoRadio.checked = true;
     playVideo(firstVideoRadio.value, 0);
@@ -283,16 +314,16 @@ window.onscroll = () => {
 */
 
 const inputChecker = {
-  name: {isValid: false, message: ""},
-  email: {isValid: false, message: ""},
-  message: {isValid: false, message: ""},
-}
+  name: { isValid: false, message: "" },
+  email: { isValid: false, message: "" },
+  message: { isValid: false, message: "" },
+};
 
 const errorMessageElements = {
-  "name": nameErrorMessage,
-  "email": emailErrorMessage,
-  "message": messageErrorMessage
-}
+  name: nameErrorMessage,
+  email: emailErrorMessage,
+  message: messageErrorMessage,
+};
 
 const updateErrorMessage = (field) => {
   const errorMessageElement = errorMessageElements[field];
@@ -303,14 +334,14 @@ const updateErrorMessage = (field) => {
     errorMessageElement.innerHTML = "&nbsp;";
     errorMessageElement.parentElement.classList.add("opacity-zero");
   }
-}
+};
 
 const updateFormStatus = (field) => {
   errorMessageElements[field].innerHTML = "&nbsp;";
   errorMessageElements[field].parentElement.classList.add("opacity-zero");
-  const canSubmit = Object.values(inputChecker).every(input => input.isValid);
+  const canSubmit = Object.values(inputChecker).every((input) => input.isValid);
   sendButton.disabled = !canSubmit;
-}
+};
 
 nameInput.addEventListener("input", (e) => {
   const inputValue = e.target.value;
@@ -327,12 +358,13 @@ nameInput.addEventListener("input", (e) => {
   }
 
   updateFormStatus("name");
-})
+});
 
 emailInput.addEventListener("input", (e) => {
   const inputValue = e.target.value;
 
-  const regex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+  const regex =
+    /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
 
   if (inputValue.length === 0) {
     inputChecker.email.isValid = false;
@@ -346,7 +378,7 @@ emailInput.addEventListener("input", (e) => {
   }
 
   updateFormStatus("email");
-})
+});
 
 messageInput.addEventListener("input", (e) => {
   const inputValue = e.target.value;
@@ -363,9 +395,9 @@ messageInput.addEventListener("input", (e) => {
   }
 
   updateFormStatus("message");
-})
+});
 
-nameInput.addEventListener("blur", () => updateErrorMessage("name"))
+nameInput.addEventListener("blur", () => updateErrorMessage("name"));
 emailInput.addEventListener("blur", () => updateErrorMessage("email"));
 messageInput.addEventListener("blur", () => updateErrorMessage("message"));
 
@@ -376,28 +408,28 @@ messageInput.addEventListener("blur", () => updateErrorMessage("message"));
 const showSuccessMessage = (message) => {
   successMessageContainer.classList.remove("hidden");
   successText.textContent = message;
-}
+};
 
 successMessageContainer.addEventListener("animationend", () => {
   successMessageContainer.classList.add("hidden");
   successText.textContent = "";
-})
+});
 
 const showFailureMessage = (message) => {
   failureMessageContainer.classList.remove("hidden");
   failureText.textContent = message;
-}
+};
 
 failureMessageContainer.addEventListener("animationend", () => {
   failureMessageContainer.classList.add("hidden");
   failureText.textContent = "";
-})
+});
 
 const clearInputs = () => {
   nameInput.value = "";
   emailInput.value = "";
   messageInput.value = "";
-}
+};
 
 const sendEmail = async (e) => {
   e.preventDefault();
@@ -411,22 +443,22 @@ const sendEmail = async (e) => {
       message: messageInput.value,
     }),
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   })
-  .then((response) => {
-    if (response.ok) return response.json();
-    return Promise.reject(response);
-  })
-  .then((data) => {
-    showSuccessMessage(data.message);
-    clearInputs();
-  })
-  .catch((response) => {
-    response.json().then((data) => {
-      showFailureMessage(data.message)
+    .then((response) => {
+      if (response.ok) return response.json();
+      return Promise.reject(response);
     })
-  });
+    .then((data) => {
+      showSuccessMessage(data.message);
+      clearInputs();
+    })
+    .catch((response) => {
+      response.json().then((data) => {
+        showFailureMessage(data.message);
+      });
+    });
 };
 
-sendButton.addEventListener("click", sendEmail)
+sendButton.addEventListener("click", sendEmail);

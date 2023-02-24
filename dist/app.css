@@ -589,6 +589,9 @@ p + p {
     height: 100%;
     transition: opacity 1s;
     object-fit: cover;
+    border-top-right-radius: 2rem;
+    border-top-left-radius: 2rem;
+    z-index: 0;
 }
 
 
@@ -748,6 +751,9 @@ p + p {
     }
     .project-card {
         flex-direction: row;
+    }
+    .individual-project-image-container video {
+        border-radius: 0;
     }
     .project-card > * {
         flex: 1;
