@@ -155,7 +155,10 @@ const animate = () => {
   acceleration = Math.min(4, acceleration + Math.abs(scrollDirection) * 0.01);
 };
 
-moveCloud();
+if (window.innerWidth > 1023) {
+  moveCloud();
+}
+
 moveAirplane();
 
 /*
@@ -301,7 +304,6 @@ let firstView = true;
 
 window.onscroll = () => {
   const current = getCurrentSection();
-
   updateNavItems(current, navItems, "active");
   updateNavItems(current, navCollopasItems, "active");
 

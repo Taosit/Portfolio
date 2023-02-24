@@ -134,7 +134,8 @@ nav {
 }
 
 .nav-item.active {
-    text-decoration: underline #ffd382;
+    text-decoration: underline;
+    text-decoration-color: #ffd382;
     text-decoration-thickness: 3px; 
 }
 
@@ -149,6 +150,7 @@ nav {
     right: 4px;
     height: 100%;
     aspect-ratio: 1/1;
+    width: 48px;
     border: 0;
     background: transparent;
     padding: 0 0.3em;
@@ -156,6 +158,7 @@ nav {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: flex-end;
+    cursor: pointer;
 }
 
 .line {
@@ -212,7 +215,8 @@ hr {
 }
 
 .nav-item-collapse.active {
-    text-decoration: underline #ffd382;
+    text-decoration: underline;
+    text-decoration-color: #ffd382;
     text-decoration-thickness: 3px; 
 }
 
@@ -232,7 +236,7 @@ hr {
     transform: translateX(5px) rotate(-45deg);
 }
 
-@media (width >= 768px) {
+@media (min-width: 768px) {
     .nav-items {
         display: flex;
         gap: 1.5rem;
@@ -330,7 +334,7 @@ hr {
     width: 50%;
 }
 
-@media (width >= 768px) and (orientation: portrait) {
+@media (min-width: 768px) and (orientation: portrait) {
     .intro {
         padding: 2em 1.5em;
     }
@@ -340,7 +344,7 @@ hr {
     }
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
     .intro {
         padding: 2em 1.5em;
     }
@@ -423,13 +427,12 @@ p + p {
     right: -5vw;
     width: 100%;
     height: 250%;
-    overflow: hidden;
 }
 
 .big-cloud {
     position: absolute;
     bottom: 10%;
-    width: 100%;
+    width: 80%;
     max-width: 400px;
     aspect-ratio: 5 / 3;
     border-radius: 50%;
@@ -462,7 +465,7 @@ p + p {
     translate: 20% 30%;
 }
 
-@media (width >= 768px) {
+@media (min-width: 768px) {
     .clouds {
         top: -10%;
         right: min(-10vw, calc(600px - 50vw));
@@ -479,14 +482,18 @@ p + p {
     }
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
     .project-image-container {
         translate: 0 -30%;
         height: 10vmax;
     }
     .clouds {
+        overflow: hidden;
         top: -30%;
         height: 350%;
+    }
+    .big-cloud {
+        width: 100%;
     }
 }
 
@@ -719,7 +726,7 @@ p + p {
     text-decoration: underline;
 }
 
-@media (width >= 768px) {
+@media (min-width: 768px) {
     .project-container {
         max-width: 1200px;
     }
@@ -739,7 +746,7 @@ p + p {
     
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
     .project-description p {
         font-size: 14px;
     }
@@ -1054,12 +1061,14 @@ textarea {
     z-index: -2;
 }
 
-@media (width >= 768px) {
+@media (min-width: 768px) {
     .contact-card {
         display: grid;
         grid-template-columns: 1fr 1fr;
         column-gap: 2em;
         height: auto;
+        position: absolute;
+        top: 30vh;
     }
     .contact-card > *:not(:has(input)) {
         grid-column: span 2;
@@ -1068,24 +1077,15 @@ textarea {
         margin-top: 1em;
     }
     .trees-container {
-        width: 40%;
-        translate: 10vw;
-    }
-}
-
-@media (768px <= width < 1024px) {
-    .contact-card {
-        position: absolute;
-        top: 30vh;
-    }
-    .trees-container {
         width: 70%;
         translate: 10vw;
     }
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
     .contact-card {
+        position: relative;
+        top: 0;
         width: 80%;
     }
 }
