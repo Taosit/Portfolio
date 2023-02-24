@@ -182,6 +182,12 @@ const playVideo = (videoName, projectIndex) => {
   video.muted = true;
   if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
     video.autoplay = true;
+    video.addEventListener("pause", () => {
+      playButtons[projectIndex].classList.remove("hidden");
+    });
+    video.addEventListener("play", () => {
+      playButtons[projectIndex].classList.add("hidden");
+    });
   }
   video.addEventListener("loadeddata", () => {
     const oldVideo = projectImageContainer.querySelector("video");
