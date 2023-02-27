@@ -592,6 +592,11 @@ p + p {
     translate: -50% -50%;
     width: 5em;
     height: 5em;
+    border: 0.5rem solid #cdcdcd23;
+    border-top: 0.5rem solid #cdcdcd;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    transition: opacity 0.2s;
 }
 
 .individual-project-image-container:where(img, video) {
