@@ -177,6 +177,7 @@ const videoNames = [
 
 const playVideo = (videoName, projectIndex) => {
   videoLoaders[projectIndex].classList.remove("hidden");
+  playButtons[projectIndex].classList.add("hidden");
   const projectImageContainer = projectImageContainers[projectIndex];
   const radio = projectImageContainer.parentElement.querySelector(
     `#${videoName}`
@@ -203,7 +204,6 @@ const playVideo = (videoName, projectIndex) => {
       .querySelector(".prompt-container")
       .classList.add("hidden");
     video.play();
-    playButtons[projectIndex].classList.add("hidden");
   });
   projectImageContainer.addEventListener("mouseover", () => {
     if (video.paused) return;
