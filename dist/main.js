@@ -205,6 +205,7 @@ const playVideo = (videoName, projectIndex) => {
       .querySelector(".prompt-container")
       .classList.add("hidden");
     video.play();
+    video.currentTime = 0;
   });
   projectImageContainer.addEventListener("mouseover", () => {
     if (video.paused) return;
