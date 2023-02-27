@@ -863,6 +863,7 @@ p + p {
 .contact-input-group {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .contact-input-group label {

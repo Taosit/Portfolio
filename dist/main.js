@@ -189,6 +189,7 @@ const playVideo = (videoName, projectIndex) => {
   if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
     video.autoplay = true;
     video.addEventListener("pause", () => {
+      if (!radio.checked) return;
       playButtons[projectIndex].classList.remove("hidden");
     });
     video.addEventListener("play", () => {
