@@ -597,6 +597,7 @@ p + p {
     border-radius: 50%;
     animation: spin 2s linear infinite;
     transition: opacity 0.2s;
+    z-index: 1;
 }
 
 .individual-project-image-container:where(img, video) {
